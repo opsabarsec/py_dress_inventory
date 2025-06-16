@@ -4,7 +4,7 @@ Manually describing each item to sell it online (say, on vinted.it) can take you
 
 This package helps you by feeding the images to an LLM and generating the description from the images.
 
-
+![Logo](img/logo.png)
 --------
 Usage:
 - create the file .env in the main directory
@@ -28,4 +28,9 @@ Finally run the main script
 
 python main.py
 
+OUTPUT: dataframe with description for each item
+
+Example output:
+
+![Example DataFrame](img/example_dataframe.png)
 --------
