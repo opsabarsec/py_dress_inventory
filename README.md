@@ -33,4 +33,8 @@ OUTPUT: dataframe with description for each item
 Example output:
 
 ![Example DataFrame](img/example_dataframe.png)
+
+DISCLAIMER: this uses a prompt in Italian since it was the author convenience.
+It is written in the file /ai_image_reader/clothing_describer.py
+Feel free to change it to your own prompt in your language of choice.
 --------
