@@ -93,8 +93,7 @@ def describe_clothing_images(
             messages=messages,
             max_tokens=1000,
         )
-        with open("description.txt", "w", encoding="utf-8") as f:
-            f.write(response.choices[0].message.content)
+
         return response.choices[0].message.content
 
     except Exception as e:

@@ -53,18 +53,34 @@ def build_description(subfolder):
 
     # Describe clothing images using OpenAI client
     client = openai.OpenAI(api_key=openai_api_key)
-    description = describer.describe_clothing_images(client, image_files)
-    print(f"Description for '{subfolder}': {description}")
+
+    description_file = folder_path / "description.txt"
+    if description_file.exists():
+        with open(description_file, "r", encoding="utf-8") as f:
+            description = f.read().strip()
+        print(f"Loaded description from '{description_file}'.")
+
+    else:
+        print(f"No description file found in '{subfolder}'. Generating description...")
+        # Generate description using the describer
+        description = describer.describe_clothing_images(client, image_files)
+        with open(description_file, "w", encoding="utf-8") as f:
+            f.write(description)
+        print(f"Description for '{subfolder}': {description}")
     return description
 
 
 def build_dataframe() -> pd.DataFrame:
     """Builds a DataFrame with folder names and their descriptions."""
-    # List folders in the current directory
+    # List folders in the current directory. Simple check that we have the data folder
     current_dir_folders = [f.name for f in Path(".").iterdir() if f.is_dir()]
     print("Folders in current directory:", current_dir_folders)
+    # get the list of subfolders in the "data" directory
+    # each subfolder should contain images of clothing items
+
     list_subfolders = find_subfolders("data")
     print(f"Found {len(list_subfolders)} subfolders.")
+
     list_descriptions = []
     for subfolder in list_subfolders:
         description = build_description(subfolder)
