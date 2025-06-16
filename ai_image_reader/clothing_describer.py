@@ -32,7 +32,18 @@ def get_image_files(folder_path: str) -> List[str]:
     return sorted(image_files)
 
 
-def describe_clothing_images(client: OpenAI, image_paths: List[str]) -> str:
+prompt_italiano = """Analizza queste immagini di abbigliamento e fornisci una
+descrizione dettagliata dell'articolo di abbigliamento per una vendita su Vinted.
+Includi informazioni su: stile e tipologia del capo, colore principale e eventuali colori secondari,
+materiale e composizione (se visibile), vestibilità e taglia apparente, dettagli del design (bottoni, cerniere, tasche, stampe, ricami), 
+condizioni dell'articolo (nuovo, come nuovo, buone condizioni, ecc.), marca se visibile, e qualsiasi caratteristica distintiva o difetto evidente. 
+Se ci sono più immagini dello stesso capo, descrivilo in modo completo considerando tutti gli angoli mostrati.
+Scrivi la descrizione in modo accattivante per attirare potenziali acquirenti."""
+
+
+def describe_clothing_images(
+    client: OpenAI, image_paths: List[str], prompt=prompt_italiano
+) -> str:
     """Send images to OpenAI and get clothing descriptions."""
 
     # Prepare the messages
@@ -42,7 +53,7 @@ def describe_clothing_images(client: OpenAI, image_paths: List[str]) -> str:
             "content": [
                 {
                     "type": "text",
-                    "text": "Analizza queste immagini di abbigliamento e fornisci una descrizione dettagliata dell'articolo di abbigliamento per una vendita su Vinted. Includi informazioni su: stile e tipologia del capo, colore principale e eventuali colori secondari, materiale e composizione (se visibile), vestibilità e taglia apparente, dettagli del design (bottoni, cerniere, tasche, stampe, ricami), condizioni dell'articolo (nuovo, come nuovo, buone condizioni, ecc.), marca se visibile, e qualsiasi caratteristica distintiva o difetto evidente. Se ci sono più immagini dello stesso capo, descrivilo in modo completo considerando tutti gli angoli mostrati. Scrivi la descrizione in modo accattivante per attirare potenziali acquirenti.",
+                    "text": prompt,
                 }
             ],
         }
