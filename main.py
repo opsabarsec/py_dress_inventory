@@ -53,7 +53,8 @@ def build_description(subfolder):
 
     # Describe clothing images using OpenAI client
     client = openai.OpenAI(api_key=openai_api_key)
-
+    # Check if a description file already exists, in such a case we don't spend
+    # money and time building a description again.
     description_file = folder_path / "description.txt"
     if description_file.exists():
         with open(description_file, "r", encoding="utf-8") as f:
@@ -64,6 +65,7 @@ def build_description(subfolder):
         print(f"No description file found in '{subfolder}'. Generating description...")
         # Generate description using the describer
         description = describer.describe_clothing_images(client, image_files)
+        # Save the description to a the generate.txt file in the subfolder
         with open(description_file, "w", encoding="utf-8") as f:
             f.write(description)
         print(f"Description for '{subfolder}': {description}")
@@ -91,10 +93,12 @@ def build_dataframe() -> pd.DataFrame:
 
     df = pd.DataFrame(dict_descriptions, columns=["folder_name", "cloth_description"])
     df.to_csv("clothing_inventory.csv", index=False)
-    print("DataFrame created with clothing descriptions.")
+
     return df
 
 
 if __name__ == "__main__":
     # Build the DataFrame with clothing descriptions
     df = build_dataframe()
+    print("Created the inventory with clothing descriptions:")
+    print("please check the clothing_inventory.csv file.")
